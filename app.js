@@ -81,7 +81,7 @@ Add a New Project
       name: 'description',
       message: 'Provide a description of the project (Required)',
       validate: description => {
-        if (description){
+        if (description) {
           return true;
         } else {
           console.log('Please provide a project description!');
@@ -101,7 +101,7 @@ Add a New Project
       name: 'link',
       message: 'Enter the GitHub link to your project. (Required)',
       validate: link => {
-        if (link){
+        if (link) {
           return true;
         } else {
           console.log('Please provide a gitHub link!');
@@ -135,12 +135,20 @@ Add a New Project
 promptUser()
   .then(promptProject)
   .then(portfolioData => {
-    const pageHTML = generatePage(portfolioData);
-
-    fs.writeFile('./index.html', pageHTML, err => {
-      if (err) throw new Error(err);
-
-      console.log('Page created! Check out index.html in this directory to see it!');
-    });
+    return generatePage(portfolioData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse);
+  })
+  .catch(err => {
+    console.log(err);
   });
+
 
